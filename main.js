@@ -1,7 +1,7 @@
 const Name = prompt("نام تان را وارد کنید");
 const task = prompt("وظیفه را وارد کنید ");
 const clock = Number(prompt(" ساعت هشدار ؟"));
-const main = Number(prompt("دقیقه ؟"));
+const minute = Number(prompt("دقیقه ؟"));
 
 function makeCounter() {
   let count = 0;
@@ -20,11 +20,11 @@ let pos = {};
 
 let valid = new Proxy(pos, {
   set(target, prop, value) {
-    if (prop === "cloce") {
+    if (prop === "clock") {
       if (value < 0 || value > 23) {
         throw new RangeError("ساعت را اشتباه انتخاب کردید ");
       }
-    } else if (prop === "main") {
+    } else if (prop === "minute") {
       if (value < 0 || value > 59) {
         throw new RangeError("دقیقه را اشتباه انتخاب کردید ");
       }
@@ -37,7 +37,7 @@ let valid = new Proxy(pos, {
         throw new Error("عنوان وظیفه الزامی است");
       }
     } else {
-      throw new Error("'cloce' و 'minute' ,.... مجاز هستند");
+      console.log("ورودی ها به درستی وارد شدند");
     }
 
     target[prop] = value;
@@ -46,12 +46,14 @@ let valid = new Proxy(pos, {
   },
 });
 
-valid.cloce = clock;
-valid.minute = main;
-valid.name = Name;
+valid.clock = clock;
+valid.minute = minute;
+valid.Name = Name;
 valid.task = task;
 
-const Times = valid.cloce * 3600000 + valid.minute * 60000;
+const sum = valid.clock * 36000000 + valid.minute * 60000;
+
+const Times = sum - new Date();
 
 function Dailytasks(task) {
   return new Promise((X) => {
@@ -60,11 +62,9 @@ function Dailytasks(task) {
 }
 
 async function gettask() {
-  let data = await Dailytasks();
+  let data = await Dailytasks(valid.task);
   console.log(data);
 }
-
-gettask();
 
 function Checking(task) {
   return new Promise((resolve, reject) => {
@@ -81,3 +81,6 @@ function Checking(task) {
     }, 10000);
   });
 }
+
+Checking();
+console.log(pos);
