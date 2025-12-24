@@ -59,7 +59,7 @@ let valid = new Proxy(pos, {
 // valid.minute = minute;
 valid.Name = Name;
 valid.task = task;
-valid.task = Time;
+valid.Time = Time;
 
 // const date = .getTime();
 // const newdate = new Date().getTime();
@@ -93,5 +93,5 @@ async function gettask() {
 // }
 
 // Checking();
-Dailytasks(task);
+gettask();
 console.log(pos);
